@@ -66,8 +66,6 @@ addTicketBtn.addEventListener("click", function () {
   renderTickets(data);
 });
 
-console.log(searchResultText);
-console.log(regionSearch);
 regionSearch.addEventListener("change", function () {
   if (regionSearch.value === "") {
     renderTickets(data);
@@ -81,14 +79,17 @@ regionSearch.addEventListener("change", function () {
     renderTickets(filterData);
   }
 });
-
+/* ul li part */
 function renderTickets(tickets) {
   let ticketList = "";
-  tickets.forEach(function (ticket) /* 選取所有tickets */ {
+  tickets.forEach(function (ticket) {
     ticketList += `<li class="ticketCard">
               <div class="ticketCard-img">
                 <a href="#">
-                 <img src="${ticket.imgUrl}" alt="${ticket.name}" />
+                  <img
+                    src=${ticket.imgUrl}
+                    alt=""
+                  />
                 </a>
                 <div class="ticketCard-region">${ticket.area}</div>
                 <div class="ticketCard-rank">${ticket.rate}</div>
@@ -117,7 +118,6 @@ function renderTickets(tickets) {
             </li>`;
   });
   ticketCardArea.innerHTML = ticketList;
-  searchResultText.textContent = `本次搜尋共${tickets.length} 筆資料`;
+  searchResultText.textContent = `本次搜尋共 ${tickets.length} 筆資料`;
 }
-
-renderTickets(data); /* data */
+renderTickets(data);
