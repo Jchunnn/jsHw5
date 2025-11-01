@@ -1,4 +1,4 @@
-let data = [
+/* let data = [
   {
     id: 0,
     name: "肥宅心碎賞櫻3日",
@@ -35,9 +35,6 @@ let data = [
     rate: 7,
   },
 ];
-const ticketCardArea = document.querySelector(".ticketCard-area");
-const regionSearch = document.querySelector(".regionSearch");
-const searchResultText = document.querySelector("#searchResult-text");
 
 const ticketName = document.querySelector("#ticketName");
 const ticketImgUrl = document.querySelector("#ticketImgUrl");
@@ -49,21 +46,25 @@ const ticketDescription = document.querySelector("#ticketDescription");
 const addTicketBtn = document.querySelector(".addTicket-btn");
 const addTicketForm = document.querySelector(".addTicket-form");
 
+const ticketCardArea = document.querySelector(".ticketCard-area");
+const regionSearch = document.querySelector(".regionSearch");
+const searchResultText = document.querySelector("#searchResult-text");
+
 addTicketBtn.addEventListener("click", function () {
-  const obj = {
+  let obj = {
     id: data.length,
     name: ticketName.value.trim(),
     imgUrl: ticketImgUrl.value.trim(),
-    area: ticketRegion.value,
+    area: ticketRegion.value.trim(),
     description: ticketDescription.value.trim(),
     group: Number(ticketNum.value),
     price: Number(ticketPrice.value),
     rate: Number(ticketRate.value),
   };
   data.push(obj);
+  renderTickets(data);
   addTicketForm.reset();
   regionSearch.value = "";
-  renderTickets(data);
 });
 
 regionSearch.addEventListener("change", function () {
@@ -71,53 +72,69 @@ regionSearch.addEventListener("change", function () {
     renderTickets(data);
   } else {
     let filterData = [];
-    data.forEach(function (ticket) {
-      if (ticket.area === regionSearch.value) {
-        filterData.push(ticket);
+    data.forEach(function (tickets) {
+      if (tickets.area === regionSearch.value) {
+        filterData.push(tickets);
       }
     });
     renderTickets(filterData);
   }
 });
-/* ul li part */
 function renderTickets(tickets) {
   let ticketList = "";
   tickets.forEach(function (ticket) {
-    ticketList += `<li class="ticketCard">
-              <div class="ticketCard-img">
-                <a href="#">
-                  <img
-                    src=${ticket.imgUrl}
-                    alt=""
-                  />
-                </a>
-                <div class="ticketCard-region">${ticket.area}</div>
-                <div class="ticketCard-rank">${ticket.rate}</div>
+    ticketList += ` <li class="ticketCard">
+            <div class="ticketCard-img">
+              <a href="#">
+                <img
+                  src="${ticket.imgUrl}"
+                  alt="${ticket.name}"
+                />
+              </a>
+              <div class="ticketCard-region">${ticket.area}</div>
+              <div class="ticketCard-rank">${ticket.rate}</div>
+            </div>
+            <div class="ticketCard-content">
+              <div>
+                <h3>
+                  <a href="#" class="ticketCard-name">${ticket.name}</a>
+                </h3>
+                <p class="ticketCard-description">
+                  ${ticket.description}
+                </p>
               </div>
-              <div class="ticketCard-content">
-                <div>
-                  <h3>
-                    <a href="#" class="ticketCard-name">${ticket.name}</a>
-                  </h3>
-                  <p class="ticketCard-description">
-                    ${ticket.description}
+              <div class="ticketCard-info">
+                <div class="ticketCard-num">
+                  <p>
+                    <span><i class="fas fa-exclamation-circle"></i></span>
+                    剩下最後 <span id="ticketCard-num"> ${ticket.group} </span> 組
                   </p>
                 </div>
-                <div class="ticketCard-info">
-                  <div class="ticketCard-num">
-                    <p>
-                      <span><i class="fas fa-exclamation-circle"></i></span>
-                      剩下最後 <span id="ticketCard-num"> ${ticket.group} </span> 組
-                    </p>
-                  </div>
-                  <p class="ticketCard-price">
-                    TWD <span id="ticketCard-price">$${ticket.price}</span>
-                  </p>
-                </div>
+                <p class="ticketCard-price">
+                  TWD <span id="ticketCard-price">$${ticket.price}</span>
+                </p>
               </div>
-            </li>`;
+            </div>
+          </li>`;
   });
   ticketCardArea.innerHTML = ticketList;
   searchResultText.textContent = `本次搜尋共 ${tickets.length} 筆資料`;
 }
 renderTickets(data);
+ */
+/* let ary = [];
+axios
+  .get("https://hexschool.github.io/ajaxHomework/data.json")
+  .then(function (response) {
+    console.log("資料有回傳了");
+    ary = response.data;
+    renderData();
+  });
+
+function renderData() {
+  console.log(ary);
+  const title = document.querySelector(".title");
+  title.textContent = ary[0].name;
+}
+
+console.log(ary); */
