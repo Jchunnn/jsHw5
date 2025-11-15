@@ -32,6 +32,7 @@ addTicketBtn.addEventListener("click", function () {
   addTicketForm.reset();
   regionSearch.value = "";
   renderTickets(data);
+  renderChart(data);
 });
 
 console.log(searchResultText);
@@ -49,6 +50,54 @@ regionSearch.addEventListener("change", function () {
     renderTickets(filterData);
   }
 });
+
+function renderChart(data) {
+  // 篩選地區，並累加數字上去
+  // totalObj 會變成 {高雄: 2, 台北: 1, 台中: 2}
+  let totalObj = {};
+  data.forEach(function (item, index) {
+    if (totalObj[item.area] == undefined) {
+      totalObj[item.area] = 1;
+    } else {
+      totalObj[item.area] += 1;
+    }
+  });
+  // newData = [["高雄", 2], ["台北",1], ["台中", 1]]
+  let newData = [];
+  let area = Object.keys(totalObj);
+  // area output ["高雄","台北","台中"]
+  area.forEach(function (item, index) {
+    let ary = [];
+    ary.push(item);
+    ary.push(totalObj[item]);
+    newData.push(ary);
+  });
+
+  // 將 newData 丟入 c3 產生器
+  const chart = c3.generate({
+    bindto: "#chart",
+    size: {
+      width: 200,
+      height: 200,
+    },
+    data: {
+      columns: newData,
+      type: "donut",
+      colors: {
+        高雄: "#e68818",
+        台中: "#5151D3",
+        台北: "#26C0C7",
+      },
+    },
+    donut: {
+      title: "套票地區比重",
+      width: 10,
+      label: {
+        show: false,
+      },
+    },
+  });
+}
 
 function renderTickets(tickets) {
   let ticketList = "";
@@ -113,6 +162,7 @@ function getData() {
       console.log(response.data.data);
       data = response.data.data;
       renderTickets(data);
+      renderChart(data);
     })
     .catch(function () {
       console.log("發生錯誤");
